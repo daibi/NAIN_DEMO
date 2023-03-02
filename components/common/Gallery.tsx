@@ -18,7 +18,8 @@ interface GalleryProps {
 
 interface childNFTHoverContent {
   contractName?: string | undefined,
-  description?: string | undefined
+  description?: string | undefined,
+  tokenId?: number
 }
 
 const Gallery: React.FC<GalleryProps> = ({ nfts, onViewingAirdrop  }) => {
@@ -33,8 +34,8 @@ const Gallery: React.FC<GalleryProps> = ({ nfts, onViewingAirdrop  }) => {
     setModalVisible(true);
   };
 
-  const handleChildNFTMouseEnter = (contractName: string | undefined, description: string | undefined) => {
-    setHoveredChildNFT({ contractName, description });
+  const handleChildNFTMouseEnter = (contractName: string | undefined, description: string | undefined, tokenId: number) => {
+    setHoveredChildNFT({ contractName, description, tokenId });
   };
 
   const handleChildNFTMouseLeave = () => {
@@ -73,7 +74,7 @@ const Gallery: React.FC<GalleryProps> = ({ nfts, onViewingAirdrop  }) => {
                 <div
                   key={`${nft.name}-${nft.id}-${childNFT.childTokenId}`}
                   className="relative w-8 h-8 mr-2 mb-2"
-                  onMouseEnter={() => handleChildNFTMouseEnter(childNFT.contractName, childNFT.description)}
+                  onMouseEnter={() => handleChildNFTMouseEnter(childNFT.contractName, childNFT.description, childNFT.childTokenId)}
                   onMouseLeave={handleChildNFTMouseLeave}
                   onClick={(event) => handleBadgeClick(event, childNFT)}
                 >
@@ -82,9 +83,8 @@ const Gallery: React.FC<GalleryProps> = ({ nfts, onViewingAirdrop  }) => {
                     alt={`${childNFT.contractName} - ${childNFT.childTokenId}`}
                     className="w-full h-full object-contain rounded-full"
                   />
-                  {hoveredChildNFT &&
-                    hoveredChildNFT.contractName === childNFT.contractName &&
-                    hoveredChildNFT.description === childNFT.description && (
+                  {hoveredChildNFT && hoveredChildNFT.tokenId == childNFT.childTokenId &&
+                     (
                       <div className="absolute bottom-full left-16 w-40 transform -translate-x-1/2 bg-white shadow-lg rounded-lg p-2 text-sm">
                         <div className="text-gray-700 font-bold">{childNFT.contractName}</div>
                         <div className="text-gray-500">{childNFT.description}</div>
